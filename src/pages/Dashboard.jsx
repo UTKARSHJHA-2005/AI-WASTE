@@ -88,49 +88,28 @@ const Dashboard = () => {
                 <motion.div className="hidden md:flex space-x-8" variants={staggerChildren} initial="hidden" animate="visible">
                     {[
                         { name: "Dashboard", href: "/dashboard" },
-                        { name: "Products", href: "#product" },
-                        { name: "Find Recycler", href: "#recycler" },
+                        { name: "Products", href: "/products" },
+                        { name: "Processors", href: "/recycler" },
                     ].map((item, index) => (
-                        <motion.a
-                            key={index}
-                            href={item.href}
-                            className="text-gray-700 hover:text-green-600 transition-colors font-medium"
-                            variants={fadeIn}
-                            whileHover={{ scale: 1.05 }}
-                        >
-                            {item.name}
-                        </motion.a>
+                        <motion.a key={index} href={item.href} className="text-gray-700 hover:text-green-600 transition-colors font-medium"
+                        variants={fadeIn} whileHover={{ scale: 1.05 }}>{item.name}</motion.a>
                     ))}
                 </motion.div>
-
                 <motion.div className="flex space-x-4" variants={staggerChildren} initial="hidden" animate="visible">
-                    <motion.button
-                        onClick={() => navigate("/login")}
-                        variants={fadeIn}
-                        whileHover={{ scale: 1.05 }}
-                        className="px-4 py-2 text-green-700 border border-green-600 rounded-full hover:bg-green-50 transition-colors"
-                    >
+                    <motion.button onClick={() => navigate("/login")} variants={fadeIn} whileHover={{ scale: 1.05 }}
+                        className="px-4 py-2 text-green-700 border border-green-600 rounded-full hover:bg-green-50 transition-colors">
                         Login
                     </motion.button>
-                    <motion.button
-                        onClick={() => navigate("/signup")}
-                        variants={fadeIn}
-                        whileHover={{ scale: 1.05 }}
-                        className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-colors shadow-md"
-                    >
+                    <motion.button onClick={() => navigate("/signup")} variants={fadeIn} whileHover={{ scale: 1.05 }}
+                    className="px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-full hover:from-green-700 hover:to-green-800 transition-colors shadow-md">
                         Sign Up
                     </motion.button>
                 </motion.div>
             </motion.nav>
-
             <div className="container mx-auto px-4 py-8">
                 {/* Hero section */}
-                <motion.div  
-                    className="text-center mb-12"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.7 }}
-                >
+                <motion.div  className="text-center mb-12" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} 
+                transition={{ duration: 0.7 }}>
                     <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-3">
                         Environmental <span className="text-green-600">Impact</span> Dashboard
                     </h1>
@@ -142,10 +121,8 @@ const Dashboard = () => {
                 {/* Sustainability Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-12" data-aos="zoom-out">
                     {statCards.map((stat, index) => (
-                        <div 
-                            key={index} 
-                            className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300"
-                        >
+                        <div key={index} 
+                        className="bg-white rounded-xl shadow-green-400 shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-shadow duration-300">
                             <div className={`h-2 ${stat.color === 'green' ? 'bg-green-500' : stat.color === 'yellow' ? 'bg-yellow-500' : 'bg-blue-400'}`}></div>
                             <div className="p-5 flex flex-col items-center">
                                 <span className="text-3xl mb-2">{stat.icon}</span>
@@ -163,7 +140,7 @@ const Dashboard = () => {
                 {/* Main Charts Section */}
                 <div className="grid md:grid-cols-2 gap-8 mb-10">
                     {/* Waste Management Chart */}
-                    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100" data-aos="zoom-in">
+                    <div className="bg-white p-6 border-green-400 rounded-xl shadow-md border-4" data-aos="zoom-in">
                         <h2 className="text-xl font-semibold text-gray-800 mb-2 flex items-center">
                             <span className="mr-2">♻️</span> Waste Management
                         </h2>
@@ -190,7 +167,7 @@ const Dashboard = () => {
                     </div>
 
                     {/* Revenue Sources */}
-                    <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100" data-aos="zoom-in">
+                    <div className="bg-white p-6 rounded-xl shadow-md border-green-500 border-4" data-aos="zoom-in">
                         <h2 className="text-xl font-semibold text-gray-800 mb-2 flex items-center">
                             <span className="mr-2">💰</span> Sustainable Revenue
                         </h2>
@@ -212,8 +189,8 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Carbon Footprint Section */}
-                <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100 mb-10" data-aos="flip-up" id="carbon">
+                {/* Waste Analysis Section */}
+                <div className="bg-white p-6 rounded-xl shadow-md border-4 border-blue-400 mb-10" data-aos="flip-up" id="carbon">
                     <h2 className="text-xl font-semibold text-gray-800 mb-2 flex items-center">
                         <span className="mr-2">🌍</span> Waste Analysis
                     </h2>
@@ -233,7 +210,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Eco Tips Section */}
-                <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl shadow-md border border-green-100 mb-8" data-aos="flip-down">
+                <div className="bg-gradient-to-r from-green-50 to-blue-50 p-6 rounded-xl shadow-md border border-green-400 mb-8" data-aos="flip-down">
                     <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
                         <span className="mr-2">💡</span> Today's Eco Tips
                     </h2>

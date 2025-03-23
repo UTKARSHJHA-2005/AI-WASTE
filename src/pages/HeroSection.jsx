@@ -86,7 +86,7 @@ const HeroSection = () => {
           <Leaf size={80} className="text-green-700 opacity-70 hover:opacity-100" />
         </div>
         <div className="absolute top-20 right-20 opacity-50 transition-opacity duration-700 ease-in-out">
-          <Droplet size={50} className="text-blue-500 hover:opacity-100" />
+          <Droplet size={50} className="text-blue-700 opacity-60 hover:opacity-100" />
         </div>
       </div>
       {/* Navigation */}
@@ -106,8 +106,8 @@ const HeroSection = () => {
         <motion.div className="hidden md:flex space-x-8" variants={staggerChildren} initial="hidden" animate="visible">
           {[
             { name: "Dashboard", href: "/dashboard" },
-            { name: "Product", href: "#product" },
-            { name: "Find Recycler", href: "#faq" }
+            { name: "Product", href: "/products" },
+            { name: "Processors", href: "/recycler" }
           ].map((item, index) => (
             <motion.a
               key={index}
