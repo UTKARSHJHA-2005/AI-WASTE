@@ -27,6 +27,7 @@ import pros1 from "../assets/pros1.webp"
 import pros2 from "../assets/pros2.webp"
 import pros3 from "../assets/pros3.jpeg"
 import pros4 from "../assets/pros4.jpg"
+import map from "../assets/map.jpg"
 
 
 const ProcessorsPage = () => {
@@ -542,7 +543,7 @@ const ProcessorsPage = () => {
           </div>
           <div className="h-96 bg-gray-200 w-full relative">
             <img 
-              src="/api/placeholder/1200/600" 
+              src={map} 
               alt="Map of waste processors" 
               className="w-full h-full object-cover"
             />
