@@ -7,7 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Products from "./pages/Products";
 import AIAnalysis from "./pages/AIAnalysis";
 import Processor from "./pages/Processor";
-import Profile from "./pages/Profile";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         <Route path="/products" element={<Products />} />
         <Route path="/recycler" element={<Processor />} />
         <Route path="/AI" element={<AIAnalysis />} />
-        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile" element={<UserProfile/>}/>
       </Routes>
     </Router>
   );
