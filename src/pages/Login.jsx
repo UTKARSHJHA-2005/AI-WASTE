@@ -195,13 +195,9 @@ const LoginPage = () => {
             </motion.div>
 
             <motion.div variants={itemAnimation}>
-              <motion.button
-                type="submit"
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                variants={buttonAnimation}
-                initial="rest"
-                whileHover="hover"
-                whileTap={{ scale: 0.98 }}
+              <motion.button type="submit" 
+              className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              variants={buttonAnimation} initial="rest" whileHover="hover" whileTap={{ scale: 0.98 }}
               >
                 <span>Return to Nature</span>
                 <motion.span
@@ -237,16 +233,12 @@ const LoginPage = () => {
                   alt: "Facebook",
                 },
                 {
-                  src: "https://logos-marques.com/wp-content/uploads/2021/03/Apple-Icone.png",
+                  src: "https://e7.pngegg.com/pngimages/847/601/png-clipart-apple-store-logo-ipad-apple-logo-computer-heart-thumbnail.png",
                   alt: "Apple",
                 },
               ].map((icon, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-center cursor-pointer justify-center p-3 bg-white shadow-md rounded-lg"
-                  whileHover={{ y: -2, transition: { duration: 0.2 } }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <motion.div key={index} className="flex items-center cursor-pointer justify-center p-3 bg-white shadow-md rounded-lg"
+                  whileHover={{ y: -2, transition: { duration: 0.2 } }} whileTap={{ scale: 0.95 }}>
                   <img src={icon.src} alt={icon.alt} className="h-8 w-8 object-contain" />
                 </motion.div>
               ))}
@@ -254,13 +246,8 @@ const LoginPage = () => {
           </motion.div>
         </motion.div>
       </motion.div>
-
-      <motion.div
-        className="mt-8 text-center text-sm text-green-800 max-w-md mx-auto px-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 0.5 }}
-      >
+      <motion.div className="mt-8 text-center text-sm text-green-800 max-w-md mx-auto px-4" initial={{ opacity: 0, y: 20 }} 
+      animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8, duration: 0.5 }}>
         Thank you for being part of our mission to create a more sustainable world.
         Every login brings us one step closer to environmental harmony.
       </motion.div>

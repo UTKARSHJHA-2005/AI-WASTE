@@ -14,10 +14,12 @@ import sustainablePlant from "../assets/plant.png"
 import Navbar from "../components/Navbar"
 
 const HeroSection = () => {
+  // Initialize Aos on component mount
   useEffect(() => {
     Aos.init({ duration: 2000 })
   }, [])
 
+  const navigate=useNavigate() // Navigation
 
   // Animation variants
   const fadeIn = {
@@ -88,7 +90,7 @@ const HeroSection = () => {
           <Droplet size={50} className="text-blue-700 opacity-60 hover:opacity-100" />
         </div>
       </div>
-      {/* Navigation */}
+      {/* Navbar */}
       <Navbar/>
 
       {/* Hero Content */}
@@ -111,7 +113,7 @@ const HeroSection = () => {
           </motion.p>
 
           <motion.div className="flex flex-col sm:flex-row items-center gap-4" variants={fadeIn}>
-            <motion.button
+            <motion.button onClick={()=>navigate("/AI")} 
               className="bg-gradient-to-r from-green-700 to-green-600 text-white px-8 py-3 rounded-full flex items-center shadow-lg w-full sm:w-auto justify-center"
               variants={buttonHover}
               initial="rest"
