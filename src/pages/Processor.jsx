@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { motion } from "framer-motion"
-import { 
-  Leaf, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Search, 
-  Filter, 
-  ChevronDown, 
-  Star, 
+import {
+  Leaf,
+  MapPin,
+  Phone,
+  Mail,
+  Search,
+  Filter,
+  ChevronDown,
+  Star,
   Clock,
   CheckCircle,
   Calendar,
@@ -21,7 +21,6 @@ import Aos from "aos"
 import "aos/dist/aos.css"
 import { useNavigate } from "react-router-dom"
 import Footer from "../components/Footer"
-import ecoLogo from "../assets/Logo.png";
 import Navbar from "../components/Navbar"
 import pros1 from "../assets/pros1.webp"
 import pros2 from "../assets/pros2.webp"
@@ -33,6 +32,7 @@ import map from "../assets/map.jpg"
 const ProcessorsPage = () => {
   const navigate = useNavigate()
   const [location, setLocation] = useState("")
+  const [selectedImage, setSelectedImage] = useState(null);
   const [selectedType, setSelectedType] = useState("All Types")
   const [selectedDistance, setSelectedDistance] = useState("Any Distance")
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -42,7 +42,7 @@ const ProcessorsPage = () => {
 
   useEffect(() => {
     Aos.init({ duration: 1500 })
-    
+
     // Simulate getting user's location
     // In a real app, you would use the browser's geolocation API
     // navigator.geolocation.getCurrentPosition(...)
@@ -184,17 +184,16 @@ const ProcessorsPage = () => {
   return (
     <div className="bg-gradient-to-b from-green-50 to-blue-50 min-h-screen overflow-x-hidden">
       {/* Navigation Bar */}
-       <Navbar/>
+      <Navbar />
       {/* Page Header */}
-      <motion.div 
+      <motion.div
         className="container mx-auto px-8 py-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
-      >
+        transition={{ duration: 0.6 }}>
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <motion.h1 
+            <motion.h1
               className="text-4xl font-bold text-green-700"
               variants={fadeIn}
               initial="hidden"
@@ -202,7 +201,7 @@ const ProcessorsPage = () => {
             >
               Waste Processors Network
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="text-gray-600 mt-2"
               variants={fadeIn}
               initial="hidden"
@@ -212,9 +211,9 @@ const ProcessorsPage = () => {
               Connect with local waste management facilities and recyclers
             </motion.p>
           </div>
-          
+
           {userLocation && (
-            <motion.div 
+            <motion.div
               className="flex items-center mt-4 md:mt-0 bg-white px-4 py-2 rounded-lg shadow-sm"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -225,10 +224,10 @@ const ProcessorsPage = () => {
             </motion.div>
           )}
         </div>
-        
+
         {/* Contact Form */}
         {showContactForm && selectedProcessor && (
-          <motion.div 
+          <motion.div
             className="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-green-600"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -239,7 +238,7 @@ const ProcessorsPage = () => {
                 <h2 className="text-2xl font-bold text-green-700">{`Contact ${selectedProcessor.name}`}</h2>
                 <p className="text-gray-600">Fill out this form to send a message directly to this processor</p>
               </div>
-              <motion.button 
+              <motion.button
                 onClick={() => setShowContactForm(false)}
                 className="text-gray-500 hover:text-gray-700"
                 whileHover={{ scale: 1.1 }}
@@ -248,13 +247,13 @@ const ProcessorsPage = () => {
                 ✕
               </motion.button>
             </div>
-            
+
             <form onSubmit={handleSubmitContactForm}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">Your Name</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                     placeholder="Enter your full name"
                     required
@@ -262,8 +261,8 @@ const ProcessorsPage = () => {
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">Your Email</label>
-                  <input 
-                    type="email" 
+                  <input
+                    type="email"
                     className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                     placeholder="Enter your email address"
                     required
@@ -271,48 +270,102 @@ const ProcessorsPage = () => {
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">Phone Number</label>
-                  <input 
-                    type="tel" 
+                  <input
+                    type="tel"
                     className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                     placeholder="Enter your phone number"
                   />
                 </div>
                 <div>
                   <label className="block text-gray-700 font-medium mb-2">Waste Type</label>
-                  <select 
+                  <select
                     className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                     required
                   >
                     <option value="">Select waste type</option>
-                    {selectedProcessor.wasteTypes.map((type, index) => (
-                      <option key={index} value={type}>{type}</option>
-                    ))}
+                    {selectedProcessor?.wasteTypes?.length > 0 ? (
+                      selectedProcessor.wasteTypes.map((type, index) => (
+                        <option key={index} value={type}>{type}</option>
+                      ))
+                    ) : (
+                      <option disabled>No waste types available</option>
+                    )}
                     <option value="Other">Other (specify in message)</option>
                   </select>
                 </div>
+
+                {/* Days, Rate, and Waste aligned in one row */}
+                <div className="flex gap-4 w-full">
+                  <div className="flex-1">
+                    <label className="block text-gray-700 font-medium mb-2">Waste</label>
+                    <input
+                      type="text"
+                      className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                      placeholder="Enter your waste name"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-gray-700 font-medium mb-2">Days</label>
+                    <input
+                      type="number"
+                      className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                      placeholder="How old is the waste?"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <label className="block text-gray-700 font-medium mb-2">Rate</label>
+                    <input
+                      type="number"
+                      className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                      placeholder="Enter the rate per unit"
+                    />
+                  </div>
+                </div>
+
+                {/* Image Upload & Preview */}
+                <div className="w-full">
+                  <label className="block text-gray-700 font-medium mb-2">Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
+                    onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        setSelectedImage(URL.createObjectURL(file)); // Preview the image
+                      }
+                    }}
+                  />
+                  {selectedImage && (
+                    <div className="mt-4">
+                      <p className="text-gray-600">Preview:</p>
+                      <img src={selectedImage} alt="Selected" className="h-40 w-auto rounded-lg border" />
+                    </div>
+                  )}
+                </div>
+
                 <div className="md:col-span-2">
                   <label className="block text-gray-700 font-medium mb-2">Your Message</label>
-                  <textarea 
+                  <textarea
                     className="w-full border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none h-32"
                     placeholder="Describe your waste management needs, questions, or preferred contact times..."
                     required
                   />
                 </div>
               </div>
-              
+
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
-                  <input 
-                    type="checkbox" 
-                    id="consent" 
+                  <input
+                    type="checkbox"
+                    id="consent"
                     className="mr-2 h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
                     required
                   />
-                  <label htmlFor="consent" className="text-gray-700 text-sm">
+                  <label htmlFor="consent" className="text-gray-700 text-sm cursor-pointer">
                     I consent to sharing my contact information with this processor
                   </label>
                 </div>
-                
                 <motion.button
                   type="submit"
                   className="bg-gradient-to-r from-green-700 to-green-600 text-white px-6 py-3 rounded-lg flex items-center shadow-md"
@@ -326,21 +379,17 @@ const ProcessorsPage = () => {
             </form>
           </motion.div>
         )}
-        
+
         {/* Search and Filters */}
-        <motion.div 
-          className="bg-white rounded-xl shadow-sm p-6 mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
+        <motion.div className="bg-white rounded-xl shadow-sm p-6 mb-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
             <div className="flex items-center w-full md:w-auto mb-4 md:mb-0">
               <div className="relative flex-grow md:w-80">
                 <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input 
-                  type="text" 
-                  placeholder="Enter location or zip code" 
+                <input
+                  type="text"
+                  placeholder="Enter location or zip code"
                   className="pl-10 pr-4 py-3 w-full border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
@@ -354,7 +403,7 @@ const ProcessorsPage = () => {
                 Search
               </motion.button>
             </div>
-            
+
             <div className="flex items-center w-full md:w-auto">
               <Filter size={18} className="text-green-700 mr-2" />
               <span className="font-medium text-gray-800 mr-4">Filters</span>
@@ -367,17 +416,15 @@ const ProcessorsPage = () => {
               </motion.button>
             </div>
           </div>
-          
           {isFilterOpen && (
-            <motion.div 
+            <motion.div
               className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
-              transition={{ duration: 0.3 }}
-            >
+              transition={{ duration: 0.3 }}>
               <div>
                 <label className="block text-sm text-gray-600 mb-2">Processor Type</label>
-                <select 
+                <select
                   className="w-full border border-gray-200 rounded-lg p-2 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none"
                   value={selectedType}
                   onChange={(e) => setSelectedType(e.target.value)}
@@ -389,10 +436,10 @@ const ProcessorsPage = () => {
                   <option value="Community Composting">Community Composting</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm text-gray-600 mb-2">Distance</label>
-                <select 
+                <select
                   className="w-full border border-gray-200 rounded-lg p-2 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none"
                   value={selectedDistance}
                   onChange={(e) => setSelectedDistance(e.target.value)}
@@ -404,7 +451,7 @@ const ProcessorsPage = () => {
                   <option value="50">Within 50 miles</option>
                 </select>
               </div>
-              
+
               <div>
                 <label className="block text-sm text-gray-600 mb-2">Waste Type</label>
                 <select className="w-full border border-gray-200 rounded-lg p-2 focus:border-green-500 focus:ring-1 focus:ring-green-500 outline-none">
@@ -418,9 +465,9 @@ const ProcessorsPage = () => {
             </motion.div>
           )}
         </motion.div>
-        
+
         {/* Results Count */}
-        <motion.div 
+        <motion.div
           className="mb-6 text-gray-700"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -428,9 +475,9 @@ const ProcessorsPage = () => {
         >
           Found {filteredProcessors.length} waste processors{location ? ` near "${location}"` : ''}
         </motion.div>
-        
+
         {/* Processor Cards */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16"
           variants={staggerChildren}
           initial="hidden"
@@ -445,9 +492,9 @@ const ProcessorsPage = () => {
             >
               <div className="grid grid-cols-1 md:grid-cols-3">
                 <div className="md:col-span-1">
-                  <img 
-                    src={processor.image} 
-                    alt={processor.name} 
+                  <img
+                    src={processor.image}
+                    alt={processor.name}
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -461,7 +508,7 @@ const ProcessorsPage = () => {
                       <span className="text-gray-700 ml-1">{processor.rating}</span>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center text-gray-600 text-sm mb-2">
                     <div className="bg-green-100 text-green-800 px-2 py-1 rounded-md mr-2">
                       {processor.type}
@@ -471,9 +518,9 @@ const ProcessorsPage = () => {
                       <span>{processor.distance} miles away</span>
                     </div>
                   </div>
-                  
+
                   <p className="text-gray-600 text-sm mb-3 line-clamp-2">{processor.description}</p>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-4">
                     <div className="flex items-center text-gray-600 text-sm">
                       <Clock size={14} className="text-green-600 mr-1" />
@@ -484,13 +531,13 @@ const ProcessorsPage = () => {
                       <span>{processor.certifications.join(', ')}</span>
                     </div>
                   </div>
-                  
+
                   <div className="mb-4">
                     <div className="text-sm text-gray-700 font-medium mb-1">Accepted Waste Types:</div>
                     <div className="flex flex-wrap gap-1">
                       {processor.wasteTypes.map((type, index) => (
-                        <span 
-                          key={index} 
+                        <span
+                          key={index}
                           className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full"
                         >
                           {type}
@@ -498,22 +545,8 @@ const ProcessorsPage = () => {
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="flex flex-col sm:flex-row items-center gap-3">
-                    <a 
-                      href={`tel:${processor.phone}`} 
-                      className="w-full sm:w-auto flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg"
-                    >
-                      <Phone size={14} className="mr-2" />
-                      Call
-                    </a>
-                    <a 
-                      href={`mailto:${processor.email}`} 
-                      className="w-full sm:w-auto flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-800 px-3 py-2 rounded-lg"
-                    >
-                      <Mail size={14} className="mr-2" />
-                      Email
-                    </a>
                     <motion.button
                       className="w-full sm:w-auto flex items-center justify-center bg-green-700 text-white px-4 py-2 rounded-lg"
                       onClick={() => openContactForm(processor)}
@@ -529,9 +562,9 @@ const ProcessorsPage = () => {
             </motion.div>
           ))}
         </motion.div>
-        
+
         {/* Map Section - Placeholder for a real map implementation */}
-        <motion.div 
+        <motion.div
           className="rounded-xl overflow-hidden shadow-md mb-16 border border-green-100"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -542,23 +575,16 @@ const ProcessorsPage = () => {
             <p className="text-sm opacity-90">Map view shows processors in your area</p>
           </div>
           <div className="h-96 bg-gray-200 w-full relative">
-            <img 
-              src={map} 
-              alt="Map of waste processors" 
+            <img
+              src={map}
+              alt="Map of waste processors"
               className="w-full h-full object-cover"
             />
-            {/* This would be replaced with an actual interactive map in a real implementation */}
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-white">
-              <div className="text-center p-4 bg-black/50 rounded-lg">
-                <p>Interactive map would be displayed here</p>
-                <p className="text-sm opacity-80">Showing {filteredProcessors.length} processors in your area</p>
-              </div>
-            </div>
           </div>
         </motion.div>
-        
+
         {/* Join The Network CTA */}
-        <motion.div 
+        <motion.div
           className="bg-gradient-to-r from-green-100 to-blue-100 rounded-xl p-8 mb-16"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -569,7 +595,7 @@ const ProcessorsPage = () => {
             <div className="mb-6 md:mb-0">
               <h2 className="text-2xl font-bold text-green-800 mb-2">Are You a Waste Management Facility?</h2>
               <p className="text-gray-700 max-w-xl">
-                Join our network of sustainable waste processors and connect with eco-conscious 
+                Join our network of sustainable waste processors and connect with eco-conscious
                 customers in your area. Expand your reach and contribute to a circular economy.
               </p>
             </div>
@@ -584,9 +610,9 @@ const ProcessorsPage = () => {
             </motion.button>
           </div>
         </motion.div>
-        
+
         {/* Scheduled Pickups Section */}
-        <motion.div 
+        <motion.div
           className="bg-white rounded-xl shadow-md p-6 mb-16"
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
@@ -605,7 +631,7 @@ const ProcessorsPage = () => {
               View All <ArrowRight size={16} className="ml-1" />
             </motion.button>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {

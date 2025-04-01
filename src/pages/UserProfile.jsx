@@ -10,6 +10,7 @@ import {
   Award,
   MapPin,
 } from "lucide-react";
+import { ToastContainer, toast } from "react-toastify";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion"
 
@@ -121,6 +122,33 @@ const UserProfile = () => {
     // Would normally save data to backend here
   };
 
+  const handleInvest = async () => {
+    try {
+      if (typeof window.ethereum !== "undefined") {
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const userAccount = accounts[0];
+        const transactionParameters = {
+          to: "0x4b567f404c7fd52f948e2bc8758945b3339d5092",
+          from: userAccount,
+          value: "0x2386F26FC10000",
+        };
+        const trans = await window.ethereum.request({
+          method: "eth_sendTransaction",
+          params: [transactionParameters],
+        });
+        console.log(trans)
+        toast.success("Transaction sent successfully!");
+        const newCoins = coins + 4;
+        setCoins(newCoins);
+        localStorage.setItem("coins", newCoins);
+      } else {
+        toast.error("MetaMask is not installed. Please install MetaMask to proceed.");
+      }
+    } catch (error) {
+      console.error("Error during transaction:", error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({
@@ -150,8 +178,8 @@ const UserProfile = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Profile Card */}
           <motion.div className="md:col-span-1" variants={staggerChildren}
-          initial="hidden"
-          animate="visible">
+            initial="hidden"
+            animate="visible">
             <div className="bg-white rounded-lg shadow p-6">
               <div className="flex justify-between items-start">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
@@ -168,9 +196,9 @@ const UserProfile = () => {
               </div>
 
               {/* Profile Picture */}
-              <motion.div  className="flex flex-col items-center my-4" initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            transition={{ duration: 0.3 }}>
+              <motion.div className="flex flex-col items-center my-4" initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ duration: 0.3 }}>
                 <div className="w-24 h-24 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-3xl font-bold">
                   {userData.name.charAt(0)}
                 </div>
@@ -280,21 +308,19 @@ const UserProfile = () => {
                 <div className="flex rounded-md shadow-sm">
                   <button
                     onClick={() => setProfileMode("normal")}
-                    className={`px-4 py-2 text-sm font-medium rounded-l-md border ${
-                      profileMode === "normal"
+                    className={`px-4 py-2 text-sm font-medium rounded-l-md border ${profileMode === "normal"
                         ? "bg-green-600 text-white border-green-600"
                         : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                    }`}
+                      }`}
                   >
                     Normal Profile
                   </button>
                   <button
                     onClick={() => setProfileMode("processor")}
-                    className={`px-4 py-2 text-sm font-medium rounded-r-md border ${
-                      profileMode === "processor"
+                    className={`px-4 py-2 text-sm font-medium rounded-r-md border ${profileMode === "processor"
                         ? "bg-green-600 text-white border-green-600"
                         : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                    }`}
+                      }`}
                   >
                     Waste Processor
                   </button>
@@ -309,8 +335,8 @@ const UserProfile = () => {
             transition={{ duration: 0.3 }}>
             {profileMode === "normal" ? (
               <motion.div className="bg-white rounded-lg shadow p-6" initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              transition={{ duration: 0.3 }}>
+                animate={{ opacity: 1, height: "auto" }}
+                transition={{ duration: 0.3 }}>
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
                   Account Overview
                 </h2>
@@ -375,8 +401,8 @@ const UserProfile = () => {
                 {/* User active request */}
                 {showRequests && (
                   <motion.div className="mt-4 border border-gray-200 rounded-lg overflow-hidden" initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: "auto" }}
-                  transition={{ duration: 0.3 }}>
+                    animate={{ opacity: 1, height: "auto" }}
+                    transition={{ duration: 0.3 }}>
                     <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
                       <h3 className="text-md font-medium text-gray-700">
                         Your Active Requests
@@ -431,8 +457,8 @@ const UserProfile = () => {
               <div className="space-y-6">
                 {/* Waste Processor Profile */}
                 <motion.div className="bg-white rounded-lg shadow p-6" initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            transition={{ duration: 0.3 }}>
+                  animate={{ opacity: 1, height: "auto" }}
+                  transition={{ duration: 0.3 }}>
                   <h2 className="text-lg font-semibold text-gray-900 mb-4">
                     Waste Processor Profile
                   </h2>
@@ -563,12 +589,12 @@ const UserProfile = () => {
                 </motion.div>
 
 
-                
+
 
                 {/* Waste Processing Requests */}
                 <motion.div className="bg-white rounded-lg shadow p-6" initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            transition={{ duration: 0.5 }}>
+                  animate={{ opacity: 1, height: "auto" }}
+                  transition={{ duration: 0.5 }}>
                   <h2 className="text-lg font-semibold text-gray-900 mb-4">
                     Waste Processing Requests
                   </h2>
@@ -632,7 +658,7 @@ const UserProfile = () => {
                           </div>
 
                           <div className="mt-4 flex justify-end space-x-3">
-                            <button className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700">
+                            <button onClick={handleInvest} className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700">
                               <Check size={14} className="mr-1" /> Approve
                             </button>
                             <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
@@ -652,6 +678,7 @@ const UserProfile = () => {
           </motion.div>
         </div>
       </motion.main>
+      <ToastContainer />
     </div>
   );
 };

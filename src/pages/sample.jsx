@@ -68,7 +68,6 @@ const WasteProcessorCard = () => {
           <span>{userData.rating}</span>
         </div>
       </div>
-      
       <div className="mb-4 flex items-center">
         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
           {userData.facilityType}
@@ -78,7 +77,6 @@ const WasteProcessorCard = () => {
           {userData.distance}
         </div>
       </div>
-      
       <p className="text-gray-600 mb-4">
         {userData.description}
       </p>
@@ -99,7 +97,6 @@ const WasteProcessorCard = () => {
           </div>
         </div>
       </div>
-      
       <div className="border-t border-gray-200 py-4">
         <h4 className="text-sm font-medium text-gray-500 mb-2">Accepted Waste Types</h4>
         <div className="flex flex-wrap gap-2">
@@ -109,18 +106,14 @@ const WasteProcessorCard = () => {
             </span>
           ))}
         </div>
-      </div>
-      
+      </div>   
       <div className="mt-4">
-        <button 
-          onClick={() => setShowRequests(!showRequests)}
-          className="w-full flex justify-between items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-        >
+        <button onClick={() => setShowRequests(!showRequests)}
+        className="w-full flex justify-between items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
           <span>View Requests</span>
           {showRequests ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
         </button>
       </div>
-      
       {showRequests && (
         <div className="mt-4 border border-gray-200 rounded-lg overflow-hidden">
           <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
