@@ -28,7 +28,6 @@ import pros3 from "../assets/pros3.jpeg"
 import pros4 from "../assets/pros4.jpg"
 import map from "../assets/map.jpg"
 
-
 const ProcessorsPage = () => {
   const navigate = useNavigate()
   const [location, setLocation] = useState("")
@@ -42,10 +41,6 @@ const ProcessorsPage = () => {
 
   useEffect(() => {
     Aos.init({ duration: 1500 })
-
-    // Simulate getting user's location
-    // In a real app, you would use the browser's geolocation API
-    // navigator.geolocation.getCurrentPosition(...)
     setTimeout(() => {
       setUserLocation({
         latitude: 37.7749,
@@ -82,19 +77,17 @@ const ProcessorsPage = () => {
   const openContactForm = (processor) => {
     setSelectedProcessor(processor)
     setShowContactForm(true)
-    // In a real app, you might want to scroll to the form or show a modal
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   const handleSubmitContactForm = (e) => {
     e.preventDefault()
-    // In a real app, you would send this data to your backend
     alert(`Message sent to ${selectedProcessor.name}! They will contact you shortly.`)
     setShowContactForm(false)
     setSelectedProcessor(null)
   }
 
-  // Sample waste processor data - in a real app, this would come from your backend
+  // Sample waste processor data
   const processors = [
     {
       id: 1,
@@ -174,8 +167,6 @@ const ProcessorsPage = () => {
       if (processor.distance > maxDistance) return false;
     }
     if (location.trim() !== "") {
-      // Simple location filter for demo purposes
-      // In a real app, you would use more sophisticated geolocation matching
       return processor.address.toLowerCase().includes(location.toLowerCase());
     }
     return true;
@@ -183,7 +174,7 @@ const ProcessorsPage = () => {
 
   return (
     <div className="bg-gradient-to-b from-green-50 to-blue-50 min-h-screen overflow-x-hidden">
-      {/* Navigation Bar */}
+      {/* Navbar */}
       <Navbar />
       {/* Page Header */}
       <motion.div
