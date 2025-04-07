@@ -192,13 +192,7 @@ const ProcessorsPage = () => {
             >
               Waste Processors Network
             </motion.h1>
-            <motion.p
-              className="text-gray-600 mt-2"
-              variants={fadeIn}
-              initial="hidden"
-              animate="visible"
-              transition={{ delay: 0.1 }}
-            >
+            <motion.p className="text-gray-600 mt-2" variants={fadeIn} initial="hidden" animate="visible" transition={{ delay: 0.1 }}>
               Connect with local waste management facilities and recyclers
             </motion.p>
           </div>
@@ -218,27 +212,18 @@ const ProcessorsPage = () => {
 
         {/* Contact Form */}
         {showContactForm && selectedProcessor && (
-          <motion.div
-            className="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-green-600"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            transition={{ duration: 0.3 }}
-          >
+          <motion.div className="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-green-600" initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }} transition={{ duration: 0.3 }}>
             <div className="flex justify-between items-start mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-green-700">{`Contact ${selectedProcessor.name}`}</h2>
                 <p className="text-gray-600">Fill out this form to send a message directly to this processor</p>
               </div>
-              <motion.button
-                onClick={() => setShowContactForm(false)}
-                className="text-gray-500 hover:text-gray-700"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
+              <motion.button onClick={() => setShowContactForm(false)} className="text-gray-500 hover:text-gray-700"
+                whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                 ✕
               </motion.button>
             </div>
-
             <form onSubmit={handleSubmitContactForm}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
@@ -357,12 +342,9 @@ const ProcessorsPage = () => {
                     I consent to sharing my contact information with this processor
                   </label>
                 </div>
-                <motion.button
-                  type="submit"
-                  className="bg-gradient-to-r from-green-700 to-green-600 text-white px-6 py-3 rounded-lg flex items-center shadow-md"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
+                <motion.button type="submit"
+                className="bg-gradient-to-r from-green-700 to-green-600 text-white px-6 py-3 rounded-lg flex items-center shadow-md" 
+                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <MessageCircle size={18} className="mr-2" />
                   Send Message
                 </motion.button>
@@ -555,33 +537,20 @@ const ProcessorsPage = () => {
         </motion.div>
 
         {/* Map Section - Placeholder for a real map implementation */}
-        <motion.div
-          className="rounded-xl overflow-hidden shadow-md mb-16 border border-green-100"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6 }}
-        >
+        <motion.div className="rounded-xl overflow-hidden shadow-md mb-16 border border-green-100" initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.6 }}>
           <div className="bg-green-700 text-white p-4">
             <h2 className="text-xl font-bold">Waste Processors Near You</h2>
             <p className="text-sm opacity-90">Map view shows processors in your area</p>
           </div>
           <div className="h-96 bg-gray-200 w-full relative">
-            <img
-              src={map}
-              alt="Map of waste processors"
-              className="w-full h-full object-cover"
-            />
+            <img src={map} alt="Map of waste processors" className="w-full h-full object-cover"/>
           </div>
         </motion.div>
 
         {/* Join The Network CTA */}
-        <motion.div
-          className="bg-gradient-to-r from-green-100 to-blue-100 rounded-xl p-8 mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          data-aos="fade-up"
-        >
+        <motion.div className="bg-gradient-to-r from-green-100 to-blue-100 rounded-xl p-8 mb-16" initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.8 }} data-aos="fade-up">
           <div className="flex flex-col md:flex-row items-center justify-between">
             <div className="mb-6 md:mb-0">
               <h2 className="text-2xl font-bold text-green-800 mb-2">Are You a Waste Management Facility?</h2>
@@ -677,4 +646,4 @@ const ProcessorsPage = () => {
   )
 }
 
-export default ProcessorsPage
+export default ProcessorsPage;

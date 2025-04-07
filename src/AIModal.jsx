@@ -28,4 +28,4 @@ export const chatSession = model.startChat({
     },
   ],
 });
-export const AI_Prompt = "{code} Tell me only about how the recycle and reuse of this waste.\n";
+export const AI_Prompt = "{code} Tell me only about how the recycle and reuse of this waste and give me steps.\n";

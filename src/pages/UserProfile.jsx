@@ -10,6 +10,7 @@ import {
   Award,
   MapPin,
 } from "lucide-react";
+import Paypal from "../components/Paypal"
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion"
@@ -19,6 +20,16 @@ const UserProfile = () => {
   const [profileMode, setProfileMode] = useState("normal"); // 'normal' or 'processor'
   const [editMode, setEditMode] = useState(false);
   const [showRequests, setShowRequests] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [showPayPal, setShowPayPal] = useState(false);
+
+  const handleInvest = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   // Sample user data
   const [userData, setUserData] = useState({
@@ -62,17 +73,6 @@ const UserProfile = () => {
       email: "david.c@example.com",
     },
   ];
-
-  // const ProccessorData = {
-  //   businessName: "GreenCycle Solutions",
-  //   rating: "4.8",
-  //   facilityType: "Composting Facility",
-  //   distance: "2.4 miles away",
-  //   description: "Specializes in commercial and residential food waste composting with state-of-the-art technology.",
-  //   operatingHours: "Mon-Sat: 8AM-5PM",
-  //   certifications: "USCC Certified, EPA Approved",
-  //   acceptedWasteTypes: ["Food Waste", "Yard Waste", "Paper Products"]
-  // };
 
   // Sample requests data
   const requestsData = [
@@ -122,7 +122,7 @@ const UserProfile = () => {
     // Would normally save data to backend here
   };
 
-  const handleInvest = async () => {
+  const handleblock = async () => {
     try {
       if (typeof window.ethereum !== "undefined") {
         const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -309,8 +309,8 @@ const UserProfile = () => {
                   <button
                     onClick={() => setProfileMode("normal")}
                     className={`px-4 py-2 text-sm font-medium rounded-l-md border ${profileMode === "normal"
-                        ? "bg-green-600 text-white border-green-600"
-                        : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                      ? "bg-green-600 text-white border-green-600"
+                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                       }`}
                   >
                     Normal Profile
@@ -318,8 +318,8 @@ const UserProfile = () => {
                   <button
                     onClick={() => setProfileMode("processor")}
                     className={`px-4 py-2 text-sm font-medium rounded-r-md border ${profileMode === "processor"
-                        ? "bg-green-600 text-white border-green-600"
-                        : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                      ? "bg-green-600 text-white border-green-600"
+                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                       }`}
                   >
                     Waste Processor
@@ -568,7 +568,6 @@ const UserProfile = () => {
                           </div>
                         </div>
                       </div>
-
                       <div className="border-t border-gray-200 py-4">
                         <h4 className="text-sm font-medium text-gray-500 mb-2">
                           Accepted Waste Types
@@ -587,10 +586,6 @@ const UserProfile = () => {
                     </div>
                   )}
                 </motion.div>
-
-
-
-
                 {/* Waste Processing Requests */}
                 <motion.div className="bg-white rounded-lg shadow p-6" initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
@@ -661,6 +656,40 @@ const UserProfile = () => {
                             <button onClick={handleInvest} className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700">
                               <Check size={14} className="mr-1" /> Approve
                             </button>
+                            {isOpen && (
+                              <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 backdrop-blur-sm transition-all">
+                                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-[500px] transform transition-all animate-fadeIn overflow-hidden">
+                                  {/* Header */}
+                                  <div className="relative px-6 pt-6 pb-2">
+                                    <h2 className="text-xl font-bold text-gray-800 dark:text-white text-center">Choose Your Transaction Method</h2>
+                                    <button onClick={closeModal}
+                                      className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                                      <X size={20} />
+                                    </button>
+                                  </div>
+                                  {/* Options */}
+                                  <div className="px-6 py-4">
+                                    <div className="flex justify-between space-x-4">
+                                      <div onClick={handleblock} className="flex-1 bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-700 dark:to-gray-600 rounded-xl p-4 cursor-pointer hover:shadow-md transition-all border border-transparent hover:border-blue-200 dark:hover:border-blue-500">
+                                        <div className="bg-white dark:bg-gray-800 rounded-full p-3 shadow-sm mx-auto w-16 h-16 flex items-center justify-center mb-3">
+                                          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3ymr3UNKopfI0NmUY95Dr-0589vG-91KuAA&s" alt="Stocks" className="w-10 h-10" />
+                                        </div>
+                                        <p className="text-center font-semibold text-indigo-700 dark:text-indigo-300">MetaMask</p>
+                                      </div>
+                                      <div className="flex-1 bg-gradient-to-br from-purple-50 to-pink-100 dark:from-gray-700 dark:to-gray-600 rounded-xl p-4 cursor-pointer hover:shadow-md transition-all border border-transparent hover:border-purple-200 dark:hover:border-purple-500">
+                                        <Paypal />
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div className="px-6 py-4">
+                                    <button onClick={closeModal}
+                                      className="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium hover:from-indigo-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg">
+                                      Not Interested
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                             <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50">
                               <X size={14} className="mr-1" /> Reject
                             </button>

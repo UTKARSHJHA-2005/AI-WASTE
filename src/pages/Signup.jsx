@@ -305,12 +305,8 @@ const SignupPage = () => {
         </motion.div>
       </motion.div>
 
-      <motion.div
-        className="mt-8 text-center text-sm text-green-800 max-w-md mx-auto px-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.8, duration: 0.5 }}
-      >
+      <motion.div className="mt-8 text-center text-sm text-green-800 max-w-md mx-auto px-4" initial={{ opacity: 0, y: 20 }} 
+      animate={{ opacity: 1, y: 0 }}  transition={{ delay: 0.8, duration: 0.5 }}>
         By joining our community, you'll be part of a global network committed to sustainable practices,
         environmental conservation, and creating a greener future for generations to come.
       </motion.div>
