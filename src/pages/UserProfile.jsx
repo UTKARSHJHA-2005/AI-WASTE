@@ -1,32 +1,23 @@
+// Profile Page
 import React, { useState } from "react";
-import {
-  Phone,
-  Mail,
-  Edit2,
-  Check,
-  X,
-  Calendar,
-  Clock,
-  Award,
-  MapPin,
-} from "lucide-react";
-import Paypal from "../components/Paypal"
-import { ToastContainer, toast } from "react-toastify";
-import Navbar from "../components/Navbar";
-import { motion } from "framer-motion"
-
+import {Phone,Mail,Edit2,Check,X,Calendar,Clock,Award,MapPin,} from "lucide-react"; // Icons
+import Paypal from "../components/Paypal" // Paypal Gateway
+import { ToastContainer, toast } from "react-toastify"; // Notifications
+import Navbar from "../components/Navbar"; // Navbar
+import { motion } from "framer-motion" // Animation
 
 const UserProfile = () => {
-  const [profileMode, setProfileMode] = useState("normal"); // 'normal' or 'processor'
-  const [editMode, setEditMode] = useState(false);
-  const [showRequests, setShowRequests] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [showPayPal, setShowPayPal] = useState(false);
+  const [profileMode, setProfileMode] = useState("normal"); // Profile Mode(normal or processor) 
+  const [editMode, setEditMode] = useState(false); // Want to edit or not state
+  const [showRequests, setShowRequests] = useState(false); // Requests State
+  const [isOpen, setIsOpen] = useState(false); // Payment Gateway State
 
+  // Dialog Open
   const handleInvest = () => {
     setIsOpen(true);
   };
 
+  // Dialog Close
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -117,11 +108,12 @@ const UserProfile = () => {
     }
   };
 
+  // Save Profile
   const handleSaveProfile = () => {
     setEditMode(false);
-    // Would normally save data to backend here
   };
 
+  // Metamask Transaction
   const handleblock = async () => {
     try {
       if (typeof window.ethereum !== "undefined") {
@@ -149,6 +141,7 @@ const UserProfile = () => {
     }
   };
 
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUserData({
@@ -157,6 +150,7 @@ const UserProfile = () => {
     });
   };
 
+  // Animation
   const staggerChildren = {
     hidden: { opacity: 0 },
     visible: {
@@ -169,9 +163,9 @@ const UserProfile = () => {
 
   return (
     <div className="bg-gradient-to-b from-green-50 to-blue-50 min-h-screen">
-      {/* Header with logo and navigation */}
+      {/* Navbar */}
       <Navbar />
-
+      {/* Main Content */}
       <motion.main className="max-w-7xl mx-auto px-4 py-8 sm:px-6" initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}>
@@ -186,85 +180,53 @@ const UserProfile = () => {
                   Profile
                 </h2>
                 {!editMode && (
-                  <button
-                    onClick={() => setEditMode(true)}
-                    className="text-green-600 hover:text-green-800 flex items-center"
-                  >
+                  <button onClick={() => setEditMode(true)} className="text-green-600 hover:text-green-800 flex items-center">
                     <Edit2 size={16} className="mr-1" /> Edit
                   </button>
                 )}
               </div>
-
               {/* Profile Picture */}
-              <motion.div className="flex flex-col items-center my-4" initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
+              <motion.div className="flex flex-col items-center my-4" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
                 transition={{ duration: 0.3 }}>
                 <div className="w-24 h-24 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-3xl font-bold">
                   {userData.name.charAt(0)}
                 </div>
               </motion.div>
-
               {editMode ? (
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Name
                     </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={userData.name}
-                      onChange={handleInputChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                    />
+                    <input type="text" name="name" value={userData.name} onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Email
                     </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={userData.email}
-                      onChange={handleInputChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                    />
+                    <input type="email" name="email" value={userData.email} onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Phone
                     </label>
-                    <input
-                      type="text"
-                      name="phone"
-                      value={userData.phone}
-                      onChange={handleInputChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                    />
+                    <input type="text" name="phone" value={userData.phone} onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Location
                     </label>
-                    <input
-                      type="text"
-                      name="location"
-                      value={userData.location}
-                      onChange={handleInputChange}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                    />
+                    <input type="text" name="location" value={userData.location} onChange={handleInputChange}
+                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                   </div>
                   <div className="flex justify-end space-x-3 mt-6">
-                    <button
-                      onClick={() => setEditMode(false)}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50"
-                    >
+                    <button onClick={() => setEditMode(false)} className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                       Cancel
                     </button>
-                    <button
-                      onClick={handleSaveProfile}
-                      className="px-4 py-2 bg-green-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-green-700"
-                    >
+                    <button onClick={handleSaveProfile} className="px-4 py-2 bg-green-600 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-green-700">
                       Save
                     </button>
                   </div>
@@ -299,43 +261,35 @@ const UserProfile = () => {
                   </div>
                 </div>
               )}
-
               {/* Profile Mode Toggle */}
               <div className="mt-8">
                 <h3 className="text-sm font-medium text-gray-500 mb-2">
                   Profile Mode
                 </h3>
                 <div className="flex rounded-md shadow-sm">
-                  <button
-                    onClick={() => setProfileMode("normal")}
+                  <button onClick={() => setProfileMode("normal")}
                     className={`px-4 py-2 text-sm font-medium rounded-l-md border ${profileMode === "normal"
                       ? "bg-green-600 text-white border-green-600"
                       : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                      }`}
-                  >
+                      }`}>
                     Normal Profile
                   </button>
-                  <button
-                    onClick={() => setProfileMode("processor")}
+                  <button onClick={() => setProfileMode("processor")}
                     className={`px-4 py-2 text-sm font-medium rounded-r-md border ${profileMode === "processor"
                       ? "bg-green-600 text-white border-green-600"
                       : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
-                      }`}
-                  >
+                      }`}>
                     Waste Processor
                   </button>
                 </div>
               </div>
             </div>
           </motion.div>
-
           {/* Main Content Area */}
-          <motion.div className="md:col-span-2" initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            transition={{ duration: 0.3 }}>
+          <motion.div className="md:col-span-2" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} 
+          transition={{ duration: 0.3 }}>
             {profileMode === "normal" ? (
-              <motion.div className="bg-white rounded-lg shadow p-6" initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
+              <motion.div className="bg-white rounded-lg shadow p-6" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
                 transition={{ duration: 0.3 }}>
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
                   Account Overview
@@ -364,17 +318,13 @@ const UserProfile = () => {
                                 </div>
                               </dd>
                             </dl>
-                            <p
-                              onClick={() => setShowRequests(!showRequests)}
-                              className="hover:underline cursor-pointer text-sm text-blue-500"
-                            >
+                            <p onClick={() => setShowRequests(!showRequests)} className="hover:underline cursor-pointer text-sm text-blue-500">
                               View
                             </p>
                           </div>
                         </div>
                       </div>
                     </div>
-
                     <div className="bg-green-50 overflow-hidden shadow rounded-lg">
                       <div className="px-4 py-5 sm:p-6">
                         <div className="flex items-center">
@@ -420,11 +370,9 @@ const UserProfile = () => {
                                 Request ID: {request.id}
                               </p>
                             </div>
-                            <span
-                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(
                                 request.status
-                              )}`}
-                            >
+                              )}`}>
                               {request.status}
                             </span>
                           </div>
@@ -462,68 +410,42 @@ const UserProfile = () => {
                   <h2 className="text-lg font-semibold text-gray-900 mb-4">
                     Waste Processor Profile
                   </h2>
-
                   {editMode ? (
                     <div className="space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Business Name
                         </label>
-                        <input
-                          type="text"
-                          name="businessName"
-                          value={userData.businessName}
-                          onChange={handleInputChange}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                        />
+                        <input type="text" name="businessName" value={userData.businessName} onChange={handleInputChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Facility Type
                         </label>
-                        <input
-                          type="text"
-                          name="facilityType"
-                          value={userData.facilityType}
-                          onChange={handleInputChange}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                        />
+                        <input type="text" name="facilityType" value={userData.facilityType} onChange={handleInputChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Description
                         </label>
-                        <textarea
-                          name="description"
-                          value={userData.description}
-                          onChange={handleInputChange}
-                          rows={3}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                        />
+                        <textarea name="description" value={userData.description} onChange={handleInputChange} rows={3}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Operating Hours
                         </label>
-                        <input
-                          type="text"
-                          name="operatingHours"
-                          value={userData.operatingHours}
-                          onChange={handleInputChange}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                        />
+                        <input type="text" name="operatingHours" value={userData.operatingHours} onChange={handleInputChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Certifications
                         </label>
-                        <input
-                          type="text"
-                          name="certifications"
-                          value={userData.certifications}
-                          onChange={handleInputChange}
-                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"
-                        />
+                        <input type="text" name="certifications" value={userData.certifications} onChange={handleInputChange}
+                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
                       </div>
                     </div>
                   ) : (
@@ -537,7 +459,6 @@ const UserProfile = () => {
                           <span>{userData.rating}</span>
                         </div>
                       </div>
-
                       <div className="mb-4 flex items-center">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           {userData.facilityType}
@@ -547,11 +468,9 @@ const UserProfile = () => {
                           {userData.distance}
                         </div>
                       </div>
-
                       <p className="text-gray-600 mb-4">
                         {userData.description}
                       </p>
-
                       <div className="border-t border-gray-200 py-4">
                         <div className="grid grid-cols-2 gap-4">
                           <div>
@@ -574,10 +493,7 @@ const UserProfile = () => {
                         </h4>
                         <div className="flex flex-wrap gap-2">
                           {userData.acceptedWasteTypes.map((type, index) => (
-                            <span
-                              key={index}
-                              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"
-                            >
+                            <span key={index} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                               {type}
                             </span>
                           ))}
@@ -593,7 +509,6 @@ const UserProfile = () => {
                   <h2 className="text-lg font-semibold text-gray-900 mb-4">
                     Waste Processing Requests
                   </h2>
-
                   {wasteRequests.length === 0 ? (
                     <p className="text-gray-500">
                       No pending waste processing requests.
@@ -601,17 +516,10 @@ const UserProfile = () => {
                   ) : (
                     <div className="space-y-6">
                       {wasteRequests.map((request, index) => (
-                        <div
-                          key={index}
-                          className="border border-gray-200 rounded-lg p-4"
-                        >
+                        <div key={index} className="border border-gray-200 rounded-lg p-4">
                           <div className="flex items-start justify-between">
                             <div className="flex items-center">
-                              <img
-                                src={request.userImage}
-                                alt={request.userName}
-                                className="h-10 w-10 rounded-full"
-                              />
+                              <img src={request.userImage} alt={request.userName} className="h-10 w-10 rounded-full"/>
                               <div className="ml-3">
                                 <h3 className="text-sm font-medium text-gray-900">
                                   {request.userName}
@@ -630,7 +538,6 @@ const UserProfile = () => {
                               </span>
                             </div>
                           </div>
-
                           <div className="mt-4 grid grid-cols-3 gap-4">
                             <div className="col-span-2">
                               <p className="text-sm text-gray-600">
@@ -644,14 +551,9 @@ const UserProfile = () => {
                               </div>
                             </div>
                             <div className="col-span-1">
-                              <img
-                                src={request.wasteImage}
-                                alt={`${request.wasteType} image`}
-                                className="rounded-md w-full h-20 object-cover"
-                              />
+                              <img src={request.wasteImage} alt={`${request.wasteType} image`} className="rounded-md w-full h-20 object-cover"/>
                             </div>
                           </div>
-
                           <div className="mt-4 flex justify-end space-x-3">
                             <button onClick={handleInvest} className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700">
                               <Check size={14} className="mr-1" /> Approve

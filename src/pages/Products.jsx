@@ -1,32 +1,19 @@
+// Product Page
 import React, { useState, useEffect } from "react"
-import { motion } from "framer-motion"
-import { 
-  Leaf, 
-  ShoppingCart, 
-  Heart, 
-  Filter, 
-  Upload, 
-  ChevronDown, 
-  Star, 
-  Plus, 
-  Minus,
-  Truck,
-  Recycle
-} from "lucide-react"
-import Aos from "aos"
+import { motion } from "framer-motion" // Animations
+import {Leaf,ShoppingCart,Heart,Filter,Upload,ChevronDown,Star,Plus,Minus,Truck,Recycle} from "lucide-react" // Icons
+import Aos from "aos" // Animations
 import "aos/dist/aos.css"
-import { useNavigate } from "react-router-dom"
-import Footer from "../components/Footer"
-import ecoLogo from "../assets/Logo.png";
-import Navbar from "../components/Navbar"
+import { useNavigate } from "react-router-dom" // UseNavigate
+import Footer from "../components/Footer" // Footer
+import Navbar from "../components/Navbar" // Navbar
+// Images
 import prod1 from "../assets/prod1.jpg"
 import prod2 from "../assets/prod2.jpg"
 import prod3 from "../assets/prod3.webp"
 import prod4 from "../assets/prod4.jpeg"
 import prod5 from "../assets/prod5.webp"
 
-
-// In a real implementation, these would come from your backend
 const CATEGORIES = ["Compost Bins", "Fertilizers", "Biogas Equipment", "Recycling Tools", "Smart Sensors"]
 
 const ProductPage = () => {
@@ -67,7 +54,6 @@ const ProductPage = () => {
 
   const addToCart = (product) => {
     setCart([...cart, {...product, quantity}])
-    // Show notification
     alert(`Added ${product.name} to cart!`)
   }
 
@@ -79,7 +65,7 @@ const ProductPage = () => {
     }
   }
 
-  // Sample products data - in a real app, this would come from your backend
+  // Sample products data - id,name,category,price,rating,reviews,image,description,features,ecoImpact,availability.
   const products = [
     {
       id: 1,
@@ -135,18 +121,17 @@ const ProductPage = () => {
     }
   ]
 
+  // Filter products based on selected category
   const filteredProducts = selectedCategory === "All Products" 
     ? products 
     : products.filter(product => product.category === selectedCategory)
 
   return (
     <div className="bg-gradient-to-b from-green-50 to-blue-50 min-h-screen overflow-x-hidden">
-      {/* Navigation Bar */}
+      {/* Navbar */}
       <Navbar/>
-
-      {/* Page Header */}
-      <motion.div 
-        className="container mx-auto px-8 py-12"
+      {/* Header */}
+      <motion.div className="container mx-auto px-8 py-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}

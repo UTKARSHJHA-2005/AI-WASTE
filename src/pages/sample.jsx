@@ -1,8 +1,9 @@
+// Request made by user to the processors and implemented in Profile Page.
 import React, { useState } from 'react';
-import { MapPin, Clock, Award, ChevronRight, ChevronDown } from 'lucide-react';
+import { MapPin, Clock, Award, ChevronRight, ChevronDown } from 'lucide-react'; // Icons
 
 const WasteProcessorCard = () => {
-  const [showRequests, setShowRequests] = useState(false);
+  const [showRequests, setShowRequests] = useState(false); // Requests State
   
   // Sample processor data
   const userData = {
@@ -80,7 +81,6 @@ const WasteProcessorCard = () => {
       <p className="text-gray-600 mb-4">
         {userData.description}
       </p>
-      
       <div className="border-t border-gray-200 py-4">
         <div className="grid grid-cols-2 gap-4">
           <div>

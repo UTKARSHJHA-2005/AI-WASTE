@@ -1,17 +1,20 @@
+// The page where user analysis waste materials.
 import { useState, useRef, useEffect } from "react";
-import { AI_Prompt, chatSession } from "../AIModal";
-import { toast, ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify"; // Notifications
 import { Send, Loader2, Image } from "lucide-react"; // Icons
+import "react-toastify/dist/ReactToastify.css";
+
+const GROQ_API_KEY = "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";
 
 function Chat() {
-    const [message, setMessage] = useState(""); // User Input
+    const [message, setMessage] = useState(""); // Message State
     const [chatHistory, setChatHistory] = useState([]); // Chat History
-    const [loading, setLoading] = useState(false); // Loading
-    const [image, setImage] = useState(null); // Image
+    const [loading, setLoading] = useState(false); // Loading State
+    const [image, setImage] = useState(null); // Image State
     const fileInputRef = useRef(null); // File Input Reference
     const chatContainerRef = useRef(null); // Chat Container Reference
 
-    // Scroll to bottom on new message
+    // Scroll to bottom of chat
     useEffect(() => {
         chatContainerRef.current?.scrollTo({
             top: chatContainerRef.current.scrollHeight,
@@ -19,113 +22,135 @@ function Chat() {
         });
     }, [chatHistory, loading]);
 
-    const handleImageClick = () => fileInputRef.current.click();
+    const handleImageClick = () => fileInputRef.current.click(); // Trigger file input
 
-    // Function to image upload
+    // Handling image upload
     const handleImageChange = (event) => {
         const file = event.target.files[0];
-        if (file) setImage(file);
+        if (file) setImage(URL.createObjectURL(file)); // Preview image before sending
     };
 
-    // Function to send message
+    // Sending the message to the AI
     const handleSend = async () => {
-        if (!message.trim() && !image) return; // Prevent empty messages
+        // Not Able to recognize by AI.
+        if (!message.trim()) {
+            toast.error("Invalid message input");
+            return;
+        }
         setLoading(true);
-        try {
-            const FINAL_PROMPT = AI_Prompt.replace('{code}', message);
-            const result = await chatSession.sendMessage(FINAL_PROMPT);
-            const responseText = result.response.text();
-            // Append user message and AI response to chat history
-            setChatHistory((prevChat) => [
-                ...prevChat,
-                { type: "user", content: message, image: image ? URL.createObjectURL(image) : null },
-                { type: "bot", content: formatText(responseText) }
+        const userMessage = {
+            role: "user",
+            content: `${message.trim()} tell me its recycling reuse methods and steps only and also don’t start okaya and all come to main point`,
+        };
+        // Add the user's message to the chat history
+        setChatHistory((prev) => [
+            ...prev,
+            { type: "user", content: message.trim(), image },
+        ]);
+        if (image) {
+            // Add image to chat history if available
+            setChatHistory((prev) => [
+                ...prev,
+                { type: "user", content: "User uploaded an image.", image },
             ]);
-            setMessage(""); // Clear input
-            setImage(null); // Clear image
-        } catch (error) {
-            console.error('Error generating response:', error.message);
-            toast.error('Failed to process your request. Please try again.');
+        }
+        setMessage(""); // Clear input field after sending the message
+        try {
+            const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${GROQ_API_KEY}`,
+                },
+                body: JSON.stringify({
+                    model: "llama-3.1-8b-instant",
+                    messages: [userMessage],
+                    temperature: 0.7,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Groq API Error:", response.status, errorData);
+                alert(`Error: ${response.status} - ${errorData.error?.message || "Bad Request"}`);
+                setLoading(false);
+                return;
+            }
+            const data = await response.json();
+            console.log("Groq Response:", data);
+            const reply = data.choices?.[0]?.message?.content;
+            if (reply) {
+                // Add AI response to chat history
+                setChatHistory((prev) => [...prev, { type: "ai", content: reply }]);
+            } else {
+                console.warn("Empty response from Groq.");
+            }
+        } catch (err) {
+            console.error("Network or JSON error:", err.message);
+            alert("Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
     };
 
-    // Formatting the AI Response.
+    // Function to format AI responses
     const formatText = (text) => {
-        const cleanedText = text.replace(/[`*]/g, ''); // Remove backticks and asterisks
-        const formattedText = cleanedText.replace(/(\d+\.)/g, '\n$1'); // Add line breaks after numbers
-        const boldPattern = /\*\*\*(.*?)\*\*\*/g; // Regular expression to match bold text
-        return formattedText.split(boldPattern).map((part, index) =>
-            index % 2 !== 0 ? <strong key={index}>{part}</strong> : part
-        );
+        const points = text.split('\n').map((point, index) => {
+            const formattedPoint = point
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')            
+                .replace(/`(.*?)`/g, '<code>$1</code>');           
+
+            return `<p key=${index} class="mb-4">${formattedPoint.trim()}</p>`;
+        });
+        return points.join(''); // Join the points with a gap between them
     };
 
     return (
         <div className="flex flex-col h-screen bg-gradient-to-br from-green-50 via-green-100 to-white">
             {/* Header */}
-            <div className="bg-white shadow-lg p-5 text-center border-b sticky top-0 z-10">
-                <h1 className="text-2xl font-extrabold text-green-600">AI Recycler</h1>
-                <p className="text-gray-500 text-sm">Your processor, powered by AI diagnosis</p>
+            <div className="bg-white shadow p-5 text-center border-b sticky top-0 z-10">
+                <h1 className="text-2xl font-bold text-green-600">AI Recycler</h1>
             </div>
-
-            {/* Chat Container */}
+            {/* Chat */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6" ref={chatContainerRef}>
                 {chatHistory.length === 0 && (
-                    <div className="text-center p-4 bg-green-200 rounded-lg">
-                        <p className="text-green-700">Welcome! Describe your wastes or upload an image to begin.</p>
-                    </div>
+                    <div className="text-center text-gray-500">Start by typing your waste description or uploading an image.</div>
                 )}
-
-                {/* Chat Messages */}
                 {chatHistory.map((msg, index) => (
                     <div key={index} className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}>
-                        <div className={`rounded-xl p-4 max-w-[70%] shadow-md ${msg.type === "user"
-                            ? "bg-green-600 text-white rounded-br-none"
-                            : msg.type === "error"
-                                ? "bg-red-100 text-red-800"
-                                : "bg-gray-100 text-gray-900 rounded-bl-none"
+                        <div className={`rounded-xl p-4 max-w-[70%] shadow-xl transition-all duration-300 ease-in-out ${msg.type === "user" ? "bg-green-600 text-white rounded-br-none transform hover:scale-105" : "bg-gray-100 text-black rounded-bl-none transform hover:scale-105"
                             }`}>
-                            {msg.image && (
-                                <img src={msg.image} alt="Uploaded" className="rounded-lg mb-2 w-48 h-48 object-cover border" />
-                            )}
-                            <pre className="whitespace-pre-wrap break-words">{msg.content}</pre>
+                            {msg.image && <img src={msg.image} alt="Uploaded" className="mb-2 rounded-lg shadow-lg" />}
+                            {/* Display formatted AI response */}
+                            <p className="text-sm" dangerouslySetInnerHTML={{ __html: formatText(msg.content) }} />
                         </div>
                     </div>
                 ))}
-
-                {/* Loader */}
+                {/* Loading */}
                 {loading && (
                     <div className="flex justify-start">
-                        <div className="flex items-center gap-2 bg-gray-200 text-gray-600 p-3 rounded-lg shadow">
-                            <Loader2 className="animate-spin" size={18} />
-                            Processing...
+                        <div className="rounded-xl p-4 bg-gray-200 text-gray-600 animate-pulse max-w-[70%]">
+                            <Loader2 className="animate-spin inline-block mr-2" size={18} />
+                            Thinking...
                         </div>
                     </div>
                 )}
             </div>
-
-            {/* Input Section */}
-            <div className="bg-white p-4 shadow-inner border-t sticky bottom-0">
-                <div className="flex items-center space-x-2">
-                    <textarea rows={1} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Describe your wastes..."
-                        className="flex-1 p-3 border rounded-lg focus:ring-2 focus:ring-green-600 focus:border-green-500 resize-none" />
-                    <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageChange} className="hidden" />
-                    <button onClick={handleImageClick} className="p-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition" title="Upload Image">
-                        <Image size={20} />
-                    </button>
-                    {image && (
-                        <img src={URL.createObjectURL(image)} alt="Selected" className="h-10 w-10 object-cover rounded-lg border" />
-                    )}
-                    <button onClick={handleSend} disabled={loading || (!message.trim() && !image)}
-                        className={`p-3 rounded-lg text-white transition ${loading || (!message.trim() && !image)
-                            ? "bg-gray-400 cursor-not-allowed"
-                            : "bg-green-600 hover:bg-green-700"
-                            }`}>
-                        <Send size={20} />
-                    </button>
-                </div>
+            {/* Input - Image, Text, Send Button */}
+            <div className="p-4 border-t bg-white flex items-center gap-2">
+                <button onClick={handleImageClick} className="text-green-600">
+                    <Image size={24} />
+                </button>
+                <input type="file" accept="image/*" className="hidden" ref={fileInputRef} onChange={handleImageChange} />
+                <input type="text" placeholder="Ask about your waste item..." value={message} onChange={(e) => setMessage(e.target.value)}
+                    className="flex-1 p-2 border rounded-md shadow-sm" />
+                <button onClick={handleSend} className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 flex items-center gap-2">
+                    <Send size={18} />
+                    Send
+                </button>
             </div>
+            {/* ToastContainer */}
             <ToastContainer />
         </div>
     );
