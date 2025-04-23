@@ -5,8 +5,6 @@ import Paypal from "../components/Paypal" // Paypal Gateway
 import { ToastContainer, toast } from "react-toastify"; // Notifications
 import Navbar from "../components/Navbar"; // Navbar
 import { motion } from "framer-motion" // Animation
-import waste from "../utils/waste.json"
-import {ethers} from "ethers";
 
 const UserProfile = () => {
   const [profileMode, setProfileMode] = useState("normal"); // Profile Mode(normal or processor) 
