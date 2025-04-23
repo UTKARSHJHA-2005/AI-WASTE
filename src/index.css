@@ -7,16 +7,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #e6f4ea; /* light green background */
+  background: #e6f4ea; 
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #4CAF50; /* eco-green */
+  background: #4CAF50; 
   border-radius: 10px;
   border: 2px solid #e6f4ea;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #388e3c; /* darker green on hover */
+  background: #388e3c; 
 }
