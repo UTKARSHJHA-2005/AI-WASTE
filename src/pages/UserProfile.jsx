@@ -133,16 +133,6 @@ const UserProfile = () => {
         });
         console.log("ETH transaction hash:", trans);
         toast.success("Transaction sent successfully!");
-        // Interact with the smart contract
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract("0x5D8019F5dA9246646658938E81109acCe7cd6d90", waste, signer);
-        const processorAddress = transactionParameters.to;
-        const wasteAmount = 10; 
-        const userName = ethers.utils.formatBytes32String("Alex"); 
-        const tx = await contract.logWaste(userName, wasteAmount, processorAddress);
-        await tx.wait(); 
-        console.log("Logged waste to contract:", tx.hash);
       } else {
         toast.error("MetaMask is not installed. Please install MetaMask to proceed.");
       }
