@@ -40,7 +40,7 @@ function Chat() {
         setLoading(true);
         const userMessage = {
             role: "user",
-            content: `${message.trim()} tell me its recycling reuse methods and steps only and also don’t start okaya and all come to main point`,
+            content: `${message.trim()} tell me its recycling and reuse methods and steps only and also don’t start okaya and all come to main point`,
         };
         // Add the user's message to the chat history
         setChatHistory((prev) => [

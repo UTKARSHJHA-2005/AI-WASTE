@@ -1,10 +1,12 @@
 // Profile Page
 import React, { useState } from "react";
-import {Phone,Mail,Edit2,Check,X,Calendar,Clock,Award,MapPin,} from "lucide-react"; // Icons
+import { Phone, Mail, Edit2, Check, X, Calendar, Clock, Award, MapPin, } from "lucide-react"; // Icons
 import Paypal from "../components/Paypal" // Paypal Gateway
 import { ToastContainer, toast } from "react-toastify"; // Notifications
 import Navbar from "../components/Navbar"; // Navbar
 import { motion } from "framer-motion" // Animation
+import waste from "../utils/waste.json"
+import {ethers} from "ethers";
 
 const UserProfile = () => {
   const [profileMode, setProfileMode] = useState("normal"); // Profile Mode(normal or processor) 
@@ -119,25 +121,34 @@ const UserProfile = () => {
       if (typeof window.ethereum !== "undefined") {
         const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
         const userAccount = accounts[0];
+        // Send transaction
         const transactionParameters = {
-          to: "0x4b567f404c7fd52f948e2bc8758945b3339d5092",
+          to: "0x4b567f404c7fd52f948e2bc8758945b3339d5092", // Processor address
           from: userAccount,
-          value: "0x2386F26FC10000",
-        };
+          value: "0x2386F26FC10000", 
+        }
         const trans = await window.ethereum.request({
           method: "eth_sendTransaction",
           params: [transactionParameters],
         });
-        console.log(trans)
+        console.log("ETH transaction hash:", trans);
         toast.success("Transaction sent successfully!");
-        const newCoins = coins + 4;
-        setCoins(newCoins);
-        localStorage.setItem("coins", newCoins);
+        // Interact with the smart contract
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract("0x5D8019F5dA9246646658938E81109acCe7cd6d90", waste, signer);
+        const processorAddress = transactionParameters.to;
+        const wasteAmount = 10; 
+        const userName = ethers.utils.formatBytes32String("Alex"); 
+        const tx = await contract.logWaste(userName, wasteAmount, processorAddress);
+        await tx.wait(); 
+        console.log("Logged waste to contract:", tx.hash);
       } else {
         toast.error("MetaMask is not installed. Please install MetaMask to proceed.");
       }
     } catch (error) {
-      console.error("Error during transaction:", error);
+      console.error("Error during transaction or contract call:", error);
+      toast.error("Transaction failed. See console for details.");
     }
   };
 
@@ -199,28 +210,28 @@ const UserProfile = () => {
                       Name
                     </label>
                     <input type="text" name="name" value={userData.name} onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Email
                     </label>
                     <input type="email" name="email" value={userData.email} onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Phone
                     </label>
                     <input type="text" name="phone" value={userData.phone} onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700">
                       Location
                     </label>
                     <input type="text" name="location" value={userData.location} onChange={handleInputChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                   </div>
                   <div className="flex justify-end space-x-3 mt-6">
                     <button onClick={() => setEditMode(false)} className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
@@ -286,8 +297,8 @@ const UserProfile = () => {
             </div>
           </motion.div>
           {/* Main Content Area */}
-          <motion.div className="md:col-span-2" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} 
-          transition={{ duration: 0.3 }}>
+          <motion.div className="md:col-span-2" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
+            transition={{ duration: 0.3 }}>
             {profileMode === "normal" ? (
               <motion.div className="bg-white rounded-lg shadow p-6" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
                 transition={{ duration: 0.3 }}>
@@ -371,8 +382,8 @@ const UserProfile = () => {
                               </p>
                             </div>
                             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(
-                                request.status
-                              )}`}>
+                              request.status
+                            )}`}>
                               {request.status}
                             </span>
                           </div>
@@ -417,35 +428,35 @@ const UserProfile = () => {
                           Business Name
                         </label>
                         <input type="text" name="businessName" value={userData.businessName} onChange={handleInputChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Facility Type
                         </label>
                         <input type="text" name="facilityType" value={userData.facilityType} onChange={handleInputChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Description
                         </label>
                         <textarea name="description" value={userData.description} onChange={handleInputChange} rows={3}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Operating Hours
                         </label>
                         <input type="text" name="operatingHours" value={userData.operatingHours} onChange={handleInputChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700">
                           Certifications
                         </label>
                         <input type="text" name="certifications" value={userData.certifications} onChange={handleInputChange}
-                        className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500"/>
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                       </div>
                     </div>
                   ) : (
@@ -519,7 +530,7 @@ const UserProfile = () => {
                         <div key={index} className="border border-gray-200 rounded-lg p-4">
                           <div className="flex items-start justify-between">
                             <div className="flex items-center">
-                              <img src={request.userImage} alt={request.userName} className="h-10 w-10 rounded-full"/>
+                              <img src={request.userImage} alt={request.userName} className="h-10 w-10 rounded-full" />
                               <div className="ml-3">
                                 <h3 className="text-sm font-medium text-gray-900">
                                   {request.userName}
@@ -551,7 +562,7 @@ const UserProfile = () => {
                               </div>
                             </div>
                             <div className="col-span-1">
-                              <img src={request.wasteImage} alt={`${request.wasteType} image`} className="rounded-md w-full h-20 object-cover"/>
+                              <img src={request.wasteImage} alt={`${request.wasteType} image`} className="rounded-md w-full h-20 object-cover" />
                             </div>
                           </div>
                           <div className="mt-4 flex justify-end space-x-3">
