@@ -31,10 +31,10 @@ const Navbar = () => {
         </div>
         {/* User Icon */}
         <Link to="/profile">
-          <div className="hidden md:flex items-center cursor-pointer hover:scale-110 transition-transform border border-green-400 rounded-full p-2 shadow-inner shadow-green-500">
+          <div className="flex items-center cursor-pointer hover:scale-110 transition-transform border border-green-400 rounded-full p-2 shadow-inner shadow-green-500 md:flex">
             <FaUser className="text-2xl" />
           </div>
-        </Link>
+         </Link>
         {/* Mobile Menu Button */}
         <div className="md:hidden">
           <button onClick={toggleMenu} className="text-green-700 text-2xl">
