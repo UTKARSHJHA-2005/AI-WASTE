@@ -45,14 +45,16 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {menuOpen && (
-  <div className="md:hidden flex flex-col items-center bg-white shadow-md p-4 space-y-4">
-    {[{ name: "Dashboard", href: "/dashboard" }, { name: "Product", href: "/products" }, { name: "Processors", href: "/recycler" }].map((item, index) => (
-      <Link  key={index} to={item.href} className={`font-medium transition-colors ${location.pathname === item.href ? "text-green-700 font-semibold" : "text-gray-800 hover:text-green-600"
-          }`}onClick={() => setMenuOpen(false)}>
-        {item.name}
-      </Link>
-    ))}
-  </div>
+ <div className="hidden md:flex space-x-8 absolute left-1/2 transform -translate-x-1/2">
+  {[{ name: "Dashboard", href: "/dashboard" }, { name: "Product", href: "/products" }, { name: "Processors", href: "/recycler" }].map((item, index) => (
+    <Link 
+      key={index} 
+      to={item.href} 
+      className={`font-medium transition-colors ${location.pathname === item.href ? "text-green-700 font-semibold" : "text-gray-800 hover:text-green-600"}`}>
+      {item.name}
+    </Link>
+  ))}
+</div>
 )}
     </div>
   );
