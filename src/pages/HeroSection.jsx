@@ -81,6 +81,7 @@ const HeroSection = () => {
 
   return (
     <div className="relative bg-gradient-to-b from-green-50 to-blue-50 min-h-screen overflow-x-hidden">
+       <Navbar/>
       {/* Sustainable Design Elements */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 opacity-30 transition-opacity duration-700 ease-in-out">
         <div className="absolute top-10 left-10 transition-opacity duration-700 ease-in-out">
@@ -90,9 +91,6 @@ const HeroSection = () => {
           <Droplet size={50} className="text-blue-700 opacity-60 hover:opacity-100" />
         </div>
       </div>
-      {/* Navbar */}
-      <Navbar/>
-
       {/* Hero Content */}
       <div className="container mx-auto px-8 md:px-16 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
         {/* Left Column - Text Content */}
