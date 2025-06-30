@@ -1,4 +1,4 @@
-# ECOGENIE
+# ♻️ECOGENIE🌿
 <br/>
 EcoGenie is an intelligent, decentralized waste management platform that leverages Artificial Intelligence and Blockchain to promote sustainability, transparency, and efficiency in waste handling systems.<br/>
 ✨ <strong><i>Features</i></strong><br/>
