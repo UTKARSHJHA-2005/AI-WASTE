@@ -98,19 +98,6 @@ const FAQSection = () => {
           </div>
         ))}
       </div>
-      <div className="mt-12 cursor-pointer bg-white p-6 rounded-lg shadow-md max-w-3xl w-full border-l-4 border-green-500">
-        <h3 className="text-xl font-semibold text-green-800 mb-3">Still have questions?</h3>
-        <p className="text-green-700 mb-4">
-          Our sustainability experts are happy to help with any questions about our organic fertilizers
-          or food waste conversion process.
-        </p>
-        <button onClick={()=>navigate("/contact")} className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-md font-medium transition-colors duration-300 flex items-center gap-2">
-          Contact Our Team
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </button>
-      </div>
     </section>
   );
 };
