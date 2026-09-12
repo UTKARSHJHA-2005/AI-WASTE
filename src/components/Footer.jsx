@@ -131,7 +131,7 @@ const Footer = () => {
         </div>
         {/* Bottom Section */}
         <div className="flex flex-col md:flex-row items-center justify-between text-green-300 text-sm pt-6 border-t border-green-700">
-          <p>© 2025 EcoGenie by Fibo Studio. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} EcoGenie by Fibo Studio. All rights reserved.</p>
           <div className="flex gap-4 mt-4 md:mt-0">
             <a href="#" className="hover:text-white transition-colors duration-300">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors duration-300">Terms of Service</a>
